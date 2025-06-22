@@ -11,7 +11,7 @@ class BinarySetSerialPinOn(I_Action):
     def __init__(self, component: SerialComponent):
         self._name = "set_pin_on"
         self._description = "Sets a pin to ON."
-        self.component = component
+        self.component: SerialComponent = component
 
     @override
     @property
@@ -28,7 +28,7 @@ class BinarySetSerialPinOn(I_Action):
         if self.component.serial_connection is None:
             raise ValueError("Serial connection is not initialized.")
         try:
-            cmd = f"Pin {self.component.serial_connection.pin} ON"
+            cmd = f"Pin {self.component.pin_number} ON"
             self.component.serial_connection.write((cmd.strip() + "\n").encode())
             response = self.component.serial_connection.readline()
             if response:
@@ -64,7 +64,7 @@ class BinarySetSerialPinOff(I_Action):
         if self.component.serial_connection is None:
             raise ValueError("Serial connection is not initialized.")
         try:
-            cmd = f"Pin {self.component.serial_connection.pin} OFF"
+            cmd = f"Pin {self.component.pin_number} OFF"
             self.component.serial_connection.write((cmd.strip() + "\n").encode())
             response = self.component.serial_connection.readline()
             if response:
