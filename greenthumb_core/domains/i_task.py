@@ -61,3 +61,11 @@ class I_Task(ABC):
                     print(f"Error executing action {action.name}: {e}")
         else:
             print(f"Trigger condition not met for task: {self.name}, skipping actions.")
+
+    @abstractmethod
+    def cleanup(self):
+        """
+        Clean up resources and perform any necessary shutdown operations.
+        This method should be called when the task is no longer needed.
+        """
+        pass

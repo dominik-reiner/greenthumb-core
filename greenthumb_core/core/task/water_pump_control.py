@@ -49,3 +49,8 @@ class WaterPumpControl(I_Task):
     @property
     def trigger(self) -> I_Trigger:
         return self._trigger
+
+    @override
+    def cleanup(self):
+        self.time_component.shutdown()
+        self.serial_component.shutdown()
