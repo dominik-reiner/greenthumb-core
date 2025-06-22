@@ -1,6 +1,7 @@
 from typing import override
 from greenthumb_core.core.components.serial_port.serial_components import SerialComponent
 from greenthumb_core.domains.i_action import I_Action
+import time
 
 
 class BinarySetSerialPinOn(I_Action):
@@ -29,8 +30,11 @@ class BinarySetSerialPinOn(I_Action):
             raise ValueError("Serial connection is not initialized.")
         try:
             cmd = f"Pin {self.component.pin_number} ON"
+            self.component.serial_connection.reset_input_buffer()
+            self.component.serial_connection.reset_output_buffer()
             self.component.serial_connection.write((cmd.strip() + "\n").encode())
             print(f"Executing command: {cmd.strip()}")
+            time.sleep(0.1)  # Give device time to respond
             response = self.component.serial_connection.readline()
             if response:
                 print("[Serial Device]:", response.decode().strip())
@@ -64,8 +68,11 @@ class BinarySetSerialPinOff(I_Action):
             raise ValueError("Serial connection is not initialized.")
         try:
             cmd = f"Pin {self.component.pin_number} OFF"
-            print(f"Executing command: {cmd.strip()}")
+            self.component.serial_connection.reset_input_buffer()
+            self.component.serial_connection.reset_output_buffer()
             self.component.serial_connection.write((cmd.strip() + "\n").encode())
+            print(f"Executing command: {cmd.strip()}")
+            time.sleep(0.1)  # Give device time to respond
             response = self.component.serial_connection.readline()
             if response:
                 print("[Serial Device]:", response.decode().strip())
