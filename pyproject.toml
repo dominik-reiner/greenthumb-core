@@ -26,6 +26,7 @@ platforms = ["osx-arm64", "linux-aarch64"]
 greenthumb-core = { path = ".", editable = true }
 
 [tool.pixi.tasks]
+start = "python -m greenthumb_core.entrypoint.task_manager"
 
 [tool.pixi.dependencies]
 python = "3.12.*"
