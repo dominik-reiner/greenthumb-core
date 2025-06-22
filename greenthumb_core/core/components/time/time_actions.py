@@ -12,7 +12,7 @@ class ReadTime(I_Action):
     def __init__(self, component: TimeComponent):
         self._name = "read_time"
         self._description = "Reads the current time from the system."
-        self.component: TimeComponent = component
+        self.component = component
 
     @override
     @property
