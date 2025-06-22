@@ -35,8 +35,6 @@ class BinarySetSerialPinOn(I_Action):
                 print("[Serial Device]:", response.decode().strip())
         except Exception as e:
             print("Error writing to serial pin:", e)
-        finally:
-            self.component.serial_connection.close()
 
 
 class BinarySetSerialPinOff(I_Action):
@@ -71,5 +69,3 @@ class BinarySetSerialPinOff(I_Action):
                 print("[Serial Device]:", response.decode().strip())
         except Exception as e:
             print("Error writing to serial pin:", e)
-        finally:
-            self.component.serial_connection.close()
