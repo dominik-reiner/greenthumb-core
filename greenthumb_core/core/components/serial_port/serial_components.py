@@ -31,6 +31,8 @@ class SerialComponent(I_Component):
     @override
     def initialize(self):
         self.serial_connection = serial.Serial(self.serial_port, self.baudrate, timeout=1)
+        import time
+        time.sleep(2)  # wait after opening serial port
 
     @override
     def shutdown(self):
