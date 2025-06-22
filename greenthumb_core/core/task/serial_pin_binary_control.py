@@ -9,26 +9,26 @@ from greenthumb_core.domains.i_task import I_Task
 from greenthumb_core.domains.i_trigger import I_Trigger
 
 
-class WaterPumpControl(I_Task):
+class SerialPinBinaryControl(I_Task):
     """
     A task that sets a serial pin to a specific state (ON/OFF).
     This task can be used to control devices connected to the serial port.
     """
 
-    def __init__(self):
+    def __init__(self, name: str, pin_number: int, trigger_interval: int = 30, on_duration: int = 600):
         self._name = "set_serial_pin"
         self._description = "Sets a serial pin to ON or OFF."
         self.time_component = TimeComponent()
         self.time_component.initialize()
-        self.serial_component = SerialComponent("Water Pump", pin_number=7)
+        self.serial_component = SerialComponent(name, pin_number=pin_number)
         self.serial_component.initialize()
         self._actions = [
             ReadTime(self.time_component),
             BinarySetSerialPinOn(self.serial_component),
-            WaitForTime(self.time_component, 10),  # Wait for 10 seconds after setting the pin
+            WaitForTime(self.time_component, on_duration),  # Wait for on_duration seconds after setting the pin
             BinarySetSerialPinOff(self.serial_component)  # Set the pin OFF after waiting
         ]
-        self._trigger = EveryNSeconds(30, self.time_component)  # Trigger every 30 seconds
+        self._trigger = EveryNSeconds(trigger_interval, self.time_component)  # Trigger every trigger_interval seconds
 
     @override
     @property
