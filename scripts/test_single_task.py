@@ -4,3 +4,4 @@ a = WaterPumpControl()
 
 print("Run 1")
 a.run()
+a.cleanup()
