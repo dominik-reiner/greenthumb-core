@@ -29,15 +29,22 @@ class BinarySetSerialPinOn(I_Action):
         if self.component.serial_connection is None:
             raise ValueError("Serial connection is not initialized.")
         try:
-            cmd = f"Pin {self.component.pin_number} ON"
+            cmd = f"ON {self.component.pin_number}"
             self.component.serial_connection.reset_input_buffer()
             self.component.serial_connection.reset_output_buffer()
             self.component.serial_connection.write((cmd.strip() + "\n").encode())
             print(f"Executing command: {cmd.strip()}")
-            time.sleep(0.1)  # Give device time to respond
-            response = self.component.serial_connection.readline()
+            start_time = time.time()
+            response = b''
+            while time.time() - start_time < 2.0:  # 2 second timeout
+                line = self.component.serial_connection.readline()
+                if line:
+                    response = line
+                    break
             if response:
                 print("[Serial Device]:", response.decode().strip())
+            else:
+                print("No response from serial device within timeout.")
         except Exception as e:
             print("Error writing to serial pin:", e)
 
@@ -67,14 +74,21 @@ class BinarySetSerialPinOff(I_Action):
         if self.component.serial_connection is None:
             raise ValueError("Serial connection is not initialized.")
         try:
-            cmd = f"Pin {self.component.pin_number} OFF"
+            cmd = f"OFF {self.component.pin_number}"
             self.component.serial_connection.reset_input_buffer()
             self.component.serial_connection.reset_output_buffer()
             self.component.serial_connection.write((cmd.strip() + "\n").encode())
             print(f"Executing command: {cmd.strip()}")
-            time.sleep(0.1)  # Give device time to respond
-            response = self.component.serial_connection.readline()
+            start_time = time.time()
+            response = b''
+            while time.time() - start_time < 2.0:  # 2 second timeout
+                line = self.component.serial_connection.readline()
+                if line:
+                    response = line
+                    break
             if response:
                 print("[Serial Device]:", response.decode().strip())
+            else:
+                print("No response from serial device within timeout.")
         except Exception as e:
             print("Error writing to serial pin:", e)
