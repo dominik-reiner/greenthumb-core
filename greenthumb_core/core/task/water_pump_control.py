@@ -21,6 +21,7 @@ class WaterPumpControl(I_Task):
         self.time_component = TimeComponent()
         self.time_component.initialize()
         self.serial_component = SerialComponent("Water Pump", pin_number=7)
+        self.serial_component.initialize()
         self._actions = [
             ReadTime(self.time_component),
             BinarySetSerialPinOn(self.serial_component),
